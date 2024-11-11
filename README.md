@@ -4,21 +4,27 @@
 
 This project involves the implementation of **Natural Language Processing (NLP)** techniques to solve a **text classification** problem. The notebook demonstrates how to preprocess text data, build machine learning models, and evaluate their performance. Specifically, it covers the use of traditional machine learning algorithms for classifying text into predefined categories.
 
-The main objective is to guide users through the process of transforming raw text data into a format suitable for machine learning models, training models on this data, and evaluating their performance using appropriate metrics.
 
 ### Dataset
-The dataset used in this project consists of text samples labeled into different categories. It is sourced from [mention dataset source], containing approximately [dataset size] samples. Each sample includes a text field and a corresponding label indicating its category.
+We use a subset of Yelp reviews that contains:
+- **Columns**: `business_id`, `date`, `review_id`, `stars`, `text`, `type`, `user_id`, `cool`, `useful`, `funny`.
+- **Target**: The `stars` column is used to define sentiment. Reviews with 4 or 5 stars are classified as **positive**, and those with 1 or 2 stars as **negative**.
 
 Before using the data for machine learning, the following preprocessing steps were carried out:
-- **Text cleaning**: Removal of punctuation, stopwords, and other irrelevant tokens.
-- **Tokenization**: Splitting text into individual words or tokens.
-- **Vectorization**: Converting text data into numerical format using methods like TF-IDF or Bag-of-Words.
+
+1. **Text Cleaning**: Lowercasing, removing punctuations, stopwords, and special characters.
+2. **Tokenization**: Splitting the text into individual words (tokens).
+3. **Feature Extraction**: Using **TF-IDF (Term Frequency-Inverse Document Frequency)** to convert text into numerical features.
+4. **Label Encoding**: Assigning binary labels (1 for positive, 0 for negative) based on the star rating.
 
 ### Machine Learning Methods
-The following machine learning methods are applied in the notebook:
+This project uses two machine learning algorithms to classify Yelp reviews:
 
-- **Logistic Regression**: A linear model used for binary or multi-class classification tasks. It is applied here to predict the category of a given text sample based on its features.
-- **Naive Bayes**: A probabilistic classifier based on Bayes' theorem with strong independence assumptions between features. It is particularly effective for text classification tasks.
+1. **Multinomial Naive Bayes (MultinomialNB)**:  
+   MultinomialNB is a probabilistic algorithm well-suited for text classification problems. It assumes that the features (words) are distributed according to a multinomial distribution. This model is efficient and often performs well for tasks like spam detection and sentiment analysis. The algorithm calculates the probability of each word in a document belonging to a certain class (positive or negative) based on the frequency of words in the training data. It then predicts the class with the highest probability.
+
+2. **TF-IDF Transformer with Logistic Regression**:  
+   The **TF-IDF Transformer** converts a collection of raw documents into a matrix of TF-IDF (Term Frequency-Inverse Document Frequency) features. TF-IDF helps highlight important words in the corpus by scaling down the influence of commonly used words and emphasizing rarer, more meaningful words. After transforming the text data into TF-IDF features, these are fed into a **Logistic Regression** classifier. Logistic Regression models the probability of a review being positive or negative based on the features. It is a linear model that predicts binary outcomes.
 
 ### Notebook Overview
 The notebook is structured as follows:
@@ -98,6 +104,59 @@ To reproduce the results from this project:
 
 ### Interpreting Results:
 
-- **Accuracy Metrics**: These metrics show how well each model performs on both training and testing datasets.
-- **Confusion Matrix**: This matrix helps visualize correct vs incorrect predictions across different categories.
-- **Feature Analysis or Graphs**: Visualizations such as bar charts may be included to show which words or features are most important for classification.
+This section provides an interpretation of the results obtained from two different machine learning models used for classifying Yelp reviews: **Multinomial Naive Bayes (MultinomialNB)** and **TF-IDF with a Logistic Regression**. Both models were evaluated using the **confusion matrix** and the **classification report**, which includes key metrics such as precision, recall, F1-score, and accuracy.
+
+1. **Confusion Matrix**
+
+The confusion matrix provides insights into the number of correct and incorrect predictions:
+- **True Positives (TP)**: Correctly classified positive reviews.
+- **True Negatives (TN)**: Correctly classified negative reviews.
+- **False Positives (FP)**: Negative reviews incorrectly classified as positive.
+- **False Negatives (FN)**: Positive reviews incorrectly classified as negative.
+
+#### MultinomialNB Confusion Matrix:
+
+[[159 69]
+
+[ 22 976]]
+
+- **159** true negatives (class 1, negative reviews).
+- **976** true positives (class 5, positive reviews).
+- **69** false positives (negative reviews predicted as positive).
+- **22** false negatives (positive reviews predicted as negative).
+
+#### TF-IDF Confusion Matrix:
+
+[[ 0 228]
+
+[ 0 998]]
+
+- **228** true negatives (class 1, negative reviews).
+- **998** true positives (class 5, positive reviews).
+- **0** false positives.
+- **0** false negatives.
+
+2. **Classification Report Metrics**
+
+The classification report provides a detailed breakdown of the model’s performance for each class (1 and 5), using the following metrics:
+- **Precision**: The proportion of true positive predictions out of all positive predictions made by the model.
+- **Recall**: The proportion of actual positives correctly identified by the model.
+- **F1-score**: The harmonic mean of precision and recall, providing a balanced measure of performance.
+- **Support**: The number of true instances of each class in the dataset.
+
+
+#### Multinomial Naive Bayes (MultinomialNB):
+- **Accuracy**: 93% overall, indicating that the model performs well in classifying both positive and negative reviews.
+- **Recall for Negative Reviews (Class 1)**: 70%, which means that it missed some negative reviews.
+- **Precision for Positive Reviews (Class 5)**: 93%, meaning most positive predictions were correct.
+- **Balanced Performance**: The model provides a balanced performance across both classes, with a slight drop in recall for negative reviews.
+
+#### TF-IDF Model:
+- **Accuracy**: 81%, lower than the MultinomialNB model.
+- **Perfect Recall (100%)**: The TF-IDF model achieved 100% recall for both positive and negative reviews, meaning it correctly identified all true instances. However, this comes at the cost of precision.
+- **Precision**: 81%, meaning the model made more incorrect positive predictions.
+- **Overfitting or Bias**: The TF-IDF model may be overfitting to the training data, as it perfectly recalled all instances but sacrificed precision.
+
+## Conclusion
+
+In summary, **Multinomial Naive Bayes** provides better overall performance with a higher accuracy score and more balanced precision-recall metrics, making it the preferable choice for this Yelp review classification task.
