@@ -39,10 +39,7 @@ The notebook is structured as follows:
    - The models are trained on the preprocessed dataset using default parameters. Cross-validation is employed to ensure generalization.
 
 4. **Evaluation**:
-   - The models are evaluated using accuracy, precision, recall, and F1-score metrics. A confusion matrix is also generated to provide insights into misclassifications.
-
-5. **Visualization**:
-   - Users can expect visualizations such as accuracy plots over epochs (if applicable), confusion matrices, and bar charts showing feature importance or class distribution.
+   - The models are evaluated using accuracy, precision, recall, and F1-score metrics. A classification report and confusion matrix are also generated to provide insights into misclassifications.
 
 ## 2. Requirements
 
